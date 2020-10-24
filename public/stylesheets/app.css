@@ -1,0 +1,129 @@
+body { 
+    padding-bottom: 70px; 
+	padding-top: 70px; 
+	background-color: whitesmoke;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.navbar-default {
+	background-color:rgba(0, 0, 0);
+}
+
+.navbar-fixed-bottom {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: black;
+	background-color: whitesmoke;
+	border: none;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-default .navbar-brand {
+	color: white;
+}
+
+.collapse.navbar-collapse li:hover {
+	background-color: rgb(247, 236, 140);
+}
+
+.jumbotron {
+	background-color: rgba(217, 231, 106, .2);
+}
+
+.table {
+	width: 100%;
+}
+
+thead>tr {
+	background-color: beige;
+}
+
+tr,th {
+	text-align: center;
+}
+
+tbody>tr:nth-child(odd) {
+	background-color: aquamarine;
+}
+
+tbody>tr:nth-child(even) {
+	background-color: rgb(241, 211, 76);
+}
+
+.delete-button {
+	display: inline-block;
+}
+
+.move-button {
+	display: inline-block;
+}
+
+.payment-button {
+	display: inline-block;
+}
+
+td button, td button a {
+	background-color: thistle;
+	color: #000000;
+	outline: none;
+	border-radius: 10%;
+	border: none;
+}
+
+.notif1 {
+	padding: 10px;
+	background-color: green;
+	width: 6rem;
+	height: .5rem;
+	margin: 0 auto;
+}
+
+.notif2 {
+	padding: 10px;
+	background-color: yellow;
+	width: 6rem;
+	height: .5rem;
+	margin: 0 auto;
+}
+
+.notif3 {
+	padding: 10px;
+	background-color: red;
+	width: 6rem;
+	height: .5rem;
+	margin: 0 auto;
+}
+
+.notif4 {
+	padding: 10px;
+	background-color: black;
+	width: 6rem;
+	height: .5rem;
+	margin: 0 auto;
+}
+
+.categories {
+	display: flex;
+	justify-content: space-between;
+	width: 39rem;
+	margin: 1rem auto;
+	margin-bottom: .1rem;
+}
+
+.categories>div {
+	border-top: .3rem #c0c0c0 solid;
+	color: #c0c0c0;
+	flex: 1 1;
+}
+
+.categories>div.active {
+	border-top: .3rem #f08000 solid;
+	color: #f08000;
+}

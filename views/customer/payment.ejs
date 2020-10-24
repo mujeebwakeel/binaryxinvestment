@@ -1,0 +1,57 @@
+<%- include('../partials/header'); -%>
+
+<h2 style="text-align: center;">Category: Payment</h2> 
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Num</th>
+                <th>Request</th>
+                <th>Area</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Effectiveness</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% customers.forEach(function(customer) { %>
+                <% if(customer.counter !== 1) { %>
+                    <tr>
+                        <td><%= customer.name %></td>
+                        <td><%= customer.phoneNum %></td>
+                        <td><%= customer.request %></td>
+                        <td><%= customer.area %></td>
+                        <td>
+                            <% if(customer.paid) { %>
+                                Paid
+                            <% } else { %>
+                                <form class="payment-button" action="/customer/<%= customer._id %>/payment" method="POST">
+                                    <button>Confirm</button>
+                                </form>
+                            <% } %>
+                        </td>
+                        <% if(customer.paid) { %>
+                            <td>Yes</td>  
+                        <% } else { %>
+                            <td>No</td>
+                        <% } %>
+                        
+                        <% if(moment(customer.moveCreated).diff(moment(customer.created), 'days') < 1 ) { %>
+                            <td><div class="notif1"></div></td>
+                        <% }else if(moment(customer.moveCreated).diff(moment(customer.created), 'days') === 1) { %>
+                            <td><div class="notif2"></div></td>
+                        <% }else if(moment(customer.moveCreated).diff(moment(customer.created), 'days') === 2) { %>
+                            <td><div class="notif3"></div></td>
+                        <% }else if(moment(customer.moveCreated).diff(moment(customer.created), 'days') > 2) { %>
+                            <td><div class="notif4"></div></td>
+                        <% } %> 
+                    </tr>
+                <% } %>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+
+<%- include('../partials/footer'); -%>

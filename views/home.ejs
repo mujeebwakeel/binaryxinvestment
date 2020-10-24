@@ -1,0 +1,23 @@
+<%- include('partials/header'); -%>
+        
+    <header class="jumbotron">
+        <div class="container">
+            <h1>Welcome to Gbale</h1>
+            <p>At Gbale, we are committed to serving your needs</p>
+            <p class= "btn btn-primary btn-lg">visit Gbale official page <a style="color: orange" href="https://www.gbale.com.ng">here</a>
+            </p>
+            <div><a href="/">Go to Landing Page</a></div>
+        </div>
+    </header>
+
+        <div class ="row text-center" style="display:flex; flex-wrap: wrap;">
+            <% houses.forEach(function(house) { %>
+                <div class="col-md-3 col-sm-6">
+                    <div class="thumbnail">
+                        <img src="<%= house %>">
+                    </div> 
+                </div>    
+            <% }); %>
+        </div>
+        
+<%- include('partials/footer'); -%>
