@@ -149,19 +149,19 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
             text: 'I would like to make a withdrawal of $' + amount + ' using the wallet ' + wallet 
         };
         transporter.sendMail(mailOptions, function(err) {
-            console.log(amount);
-            console.log(wallet);
-            console.log('mail sent');
-            req.flash('success', 'An e-mail has been sent for withdrawal notification');
+            if(!err) {
+                console.log('mail sent');
+            }
             done(err, 'done');
         });
         }
     ], function(err) {
         if (err) {
             console.log(err.message);
-            req.flash("error", "E-mail not sent");
+            req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmailcom");
             return res.redirect('/user_withdraw');
         }
+        req.flash('success', 'An e-mail has been sent for withdrawal notification');
         res.redirect('/user_withdraw');
     });
 })
@@ -205,21 +205,23 @@ router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
     };
 
     transporter.sendMail(mailOptions, function(err) {
-        console.log('Mail sent');
-        req.flash('success', 'An e-mail has been sent for buy notification');
-
-        transporter.sendMail(mailOptions1, function(err) {
-            console.log("Message sent to admin");
-        });
+        if(!err) {
+            transporter.sendMail(mailOptions1, function(err) {
+                if(!err) {
+                    console.log('Mail sent');
+                    console.log("Message sent to admin");
+                }
+            });
+        }
         done(err, 'done');
     });
-    
 }
 ], function(err) {
     if (err) {
-        req.flash("error", "E-mail not sent");
+        req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmailcom");
         return res.redirect('/user_buy');
     }
+    req.flash('success', 'An e-mail has been sent for buy notification');    
     res.redirect('/user_buy');
 });
 })

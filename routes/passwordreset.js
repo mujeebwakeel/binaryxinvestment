@@ -15,7 +15,7 @@ router.get('/user_forget', function(req, res) {
   res.render('user_ui/forget');
 });
 
-router.post('/user_forget', function(req, res, next) {
+router.post('/user_forget', function(req, res) {
   async.waterfall([
     function(done) {
       User.findOne({username: req.body.email}, function(err, user) {
@@ -46,14 +46,20 @@ router.post('/user_forget', function(req, res, next) {
         text: 'Your password is: ' + password
       };
       transporter.sendMail(mailOptions, function(err) {
-        console.log('mail sent');
-        req.flash('success', 'An e-mail has been sent to ' + user.username + ' with your password.');
-        done(err, 'done');
+        if(!err) {
+          console.log('mail sent');
+          req.flash('success', 'An e-mail has been sent to ' + user.username + ' with your password.');
+        }
+        
+        done(err, user, 'done');
       });
     }
   ], function(err) {
-    if (err) return next(err);
-    res.redirect('/user_forget');
+    if (err) {
+      req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmail.com");
+      return res.redirect('/user_forget');
+  }
+  res.redirect('/user_forget');
   });
 });
 
