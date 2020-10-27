@@ -120,7 +120,6 @@ router.get("/user_withdraw", middleware.isUserLoggedIn, function(req,res) {
 
 router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) {
         var amount = req.body.amount;
-        var wallet = req.body.walletAddress;
             async.waterfall([
             function(done) {
                 User.findById(req.params.id, function(err, user) {
@@ -132,7 +131,6 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
       });
     },
         function(user, done) {
-        var userEmail = user.username;
         var transporter = nodemailer.createTransport(smtpTransport({
             service: 'gmail', 
             auth: {
@@ -143,14 +141,27 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
         
     
         var mailOptions = {
-            to: process.env.WITHDRAW_GMAIL_ADDRESS, 
-            from: 'Binaryxinvestment',
+            to: process.env.GMAIL_ADDRESS, 
+            from: process.env.GMAIL_ADDRESS,
             subject: 'withdrawal alert',
-            text: 'I would like to make a withdrawal of $' + amount + ' using the wallet ' + wallet 
+            text: user.username +' would like to make a withdrawal of $' + amount  
         };
+
+        var mailOptions1 = {
+            to: user.username,
+            from: process.env.GMAIL_ADDRESS,
+            subject: 'Withdrawal alert',
+            text: 'The admin will communicate with you shortly. Thank you.' 
+        };
+
         transporter.sendMail(mailOptions, function(err) {
             if(!err) {
-                console.log('mail sent');
+                transporter.sendMail(mailOptions1, function(err) {
+                    if(!err) {
+                        console.log('Mail sent');
+                        console.log("Message sent to admin");
+                    }
+                });
             }
             done(err, 'done');
         });
@@ -158,16 +169,15 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
     ], function(err) {
         if (err) {
             console.log(err.message);
-            req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmailcom");
+            req.flash("error", "E-mail not sent, kindly contact the admin via ");
             return res.redirect('/user_withdraw');
         }
-        req.flash('success', 'An e-mail has been sent for withdrawal notification');
+        req.flash('success', 'An e-mail has been sent for withdrawal notification. Thank you');
         res.redirect('/user_withdraw');
     });
 })
 
 router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
-    var amount = req.body.amount;
     var method = req.body.method;
         async.waterfall([
         function(done) {
@@ -192,16 +202,16 @@ router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
 
     var mailOptions = {
         to: userEmail,
-        from: 'Binaryxinvestment',
+        from: process.env.GMAIL_ADDRESS,
         subject: 'Payment alert',
-        text: 'Make your payment using ' + method 
+        text: 'The admin will communicate with you shortly. Thank you.' 
     };
 
     var mailOptions1 = {
-        to: process.env.WITHDRAW_GMAIL_ADDRESS, 
-        from: 'Binaryxinvestment',
+        to: process.env.GMAIL_ADDRESS, 
+        from: process.env.GMAIL_ADDRESS,
         subject: 'Payment alert',
-        text: userEmail + ' is about to make a payment via ' + method 
+        text: userEmail + ' wants to make a payment via ' + method 
     };
 
     transporter.sendMail(mailOptions, function(err) {
@@ -218,10 +228,10 @@ router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
 }
 ], function(err) {
     if (err) {
-        req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmailcom");
+        req.flash("error", "E-mail not sent, kindly contact the admin via ");
         return res.redirect('/user_buy');
     }
-    req.flash('success', 'An e-mail has been sent for buy notification');    
+    req.flash('success', 'An e-mail has been sent for buy notification. You will be responded to shortly.');    
     res.redirect('/user_buy');
 });
 })

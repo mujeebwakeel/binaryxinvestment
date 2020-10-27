@@ -56,7 +56,7 @@ router.post('/user_forget', function(req, res) {
     }
   ], function(err) {
     if (err) {
-      req.flash("error", "E-mail not sent, kindly contact the admin via binaryxwithdrawal@gmail.com");
+      req.flash("error", "E-mail not sent, kindly contact the admin via ");
       return res.redirect('/user_forget');
   }
   res.redirect('/user_forget');
