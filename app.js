@@ -12,11 +12,11 @@ var MemoryStore = require('memorystore')(session);
 var User = require("./models/user");
 require('dotenv').config();
 
-var port = process.env.PORT || 8000 
+ var port = process.env.PORT || 8000;
 
 // REQUIRING ROUTES
-var indexRoutes = require("./routes/index");
-var customerRoutes = require("./routes/customer");
+var adminRoutes = require("./routes/admin");
+var userRoutes = require("./routes/user");
 var passwordReset = require("./routes/passwordreset");
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, 'useUnifiedTopology': true, 'useFindAndModify': false, useCreateIndex: true });
@@ -45,15 +45,15 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
-    res.locals.moment = moment;
-    res.locals.message = req.flash("message");
     res.locals.error = req.flash("error");
+    res.locals.logout = req.flash("logout");
+    res.locals.message = req.flash("message");
     res.locals.success = req.flash("success");
     next();
 });
 
-app.use("/", indexRoutes);
-app.use("/customer", customerRoutes);
+app.use(adminRoutes);
+app.use(userRoutes);
 app.use(passwordReset);
 
 
