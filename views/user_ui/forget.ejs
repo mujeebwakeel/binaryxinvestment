@@ -70,26 +70,7 @@
 
 
 <main id="main">
-    <% if(message && message.length > 0){ %>
-        <div class="alert alert-danger" role="alert">
-              <p><%= message %></p>
-        </div>
-        <% } %>
-        <% if(logout && logout.length > 0) { %>
-        <div class="alert alert-warning" role="alert">
-              <p><%= logout %>. Thank you for visiting our site</p>
-        </div>
-        <% } %>
-        <% if(error && error.length > 0){ %>
-        <div class="alert alert-danger" role="alert">
-              <p><%= error %></p>
-        </div>
-        <% } %>
-        <% if(success && success.length > 0){ %>
-        <div class="alert alert-success" role="alert">
-              <p><%= success %></p>
-        </div>
-        <% } %>
+    
 
     <!-- ======= About Section ======= -->
 
@@ -97,6 +78,26 @@
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact section-bg">
         <div class="container">
+            <% if(message && message.length > 0){ %>
+                <div class="alert alert-danger" role="alert">
+                      <p><%= message %></p>
+                </div>
+                <% } %>
+                <% if(logout && logout.length > 0) { %>
+                <div class="alert alert-warning" role="alert">
+                      <p><%= logout %>. Thank you for visiting our site</p>
+                </div>
+                <% } %>
+                <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger" role="alert">
+                      <p><%= error %></p>
+                </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                <div class="alert alert-success" role="alert">
+                      <p><%= success %></p>
+                </div>
+                <% } %>
 
             <div class="section-title" data-aos="fade-up">
                 <h2></h2>

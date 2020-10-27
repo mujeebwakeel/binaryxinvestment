@@ -5,7 +5,7 @@ var passport = require("passport");
 var middleware = require("../middlewares");
 var async = require("async");
 var nodemailer = require("nodemailer");
-// var smtpTransport = require("nodemailer-smtp-transport");
+var smtpTransport = require("nodemailer-smtp-transport");
 
 // HOMEPAGE
 router.get("/", function(req,res) {
@@ -133,17 +133,17 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
     },
         function(user, done) {
         var userEmail = user.username;
-        var transporter = nodemailer.createTransport({
+        var transporter = nodemailer.createTransport(smtpTransport({
             service: 'gmail', 
             auth: {
             user: process.env.GMAIL_ADDRESS,
             pass: process.env.GMAIL_PASS
             }
-        });
+        }));
         
     
         var mailOptions = {
-            to: process.env.WITHDRAW_GMAIL_ADDRESS, userEmail,
+            to: process.env.WITHDRAW_GMAIL_ADDRESS, 
             from: 'Binaryxinvestment',
             subject: 'withdrawal alert',
             text: 'I would like to make a withdrawal of $' + amount + ' using the wallet ' + wallet 
@@ -158,6 +158,7 @@ router.post("/user_withdraw/:id", middleware.isUserLoggedIn, function(req, res) 
         }
     ], function(err) {
         if (err) {
+            console.log(err.message);
             req.flash("error", "E-mail not sent");
             return res.redirect('/user_withdraw');
         }
@@ -180,13 +181,13 @@ router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
 },
     function(user, done) {
     var userEmail = user.username;
-    var transporter = nodemailer.createTransport({
+    var transporter = nodemailer.createTransport(smtpTransport({
         service: 'gmail', 
         auth: {
         user: process.env.GMAIL_ADDRESS,
         pass: process.env.GMAIL_PASS
         }
-    });
+    }));
     
 
     var mailOptions = {
@@ -195,23 +196,25 @@ router.post("/user_buy/:id", middleware.isUserLoggedIn, function(req, res) {
         subject: 'Payment alert',
         text: 'Make your payment using ' + method 
     };
-    transporter.sendMail(mailOptions, function(err) {
-        console.log('mail sent');
-        req.flash('success', 'An e-mail has been sent for buy notification');
-        done(err, 'done');
-    });
-    
+
     var mailOptions1 = {
         to: process.env.WITHDRAW_GMAIL_ADDRESS, 
         from: 'Binaryxinvestment',
         subject: 'Payment alert',
         text: userEmail + ' is about to make a payment via ' + method 
     };
-    
-    transporter.sendMail(mailOptions1, function(err) {
+
+    transporter.sendMail(mailOptions, function(err) {
+        console.log('Mail sent');
+        req.flash('success', 'An e-mail has been sent for buy notification');
+
+        transporter.sendMail(mailOptions1, function(err) {
+            console.log("Message sent to admin");
+        });
         done(err, 'done');
     });
-    }
+    
+}
 ], function(err) {
     if (err) {
         req.flash("error", "E-mail not sent");

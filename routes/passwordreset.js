@@ -17,9 +17,8 @@ router.get('/user_forget', function(req, res) {
 
 router.post('/user_forget', function(req, res, next) {
   async.waterfall([
-    
     function(done) {
-      User.findOne({ username: req.body.email }, function(err, user) {
+      User.findOne({username: req.body.email}, function(err, user) {
           if (err || !user) {
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/user_forget');
@@ -31,13 +30,13 @@ router.post('/user_forget', function(req, res, next) {
     
     function(user, done) {
       var password = user.password;
-      var transporter = nodemailer.createTransport({
+      var transporter = nodemailer.createTransport(smtpTransport({
         service: 'gmail', 
         auth: {
           user: process.env.GMAIL_ADDRESS,
           pass: process.env.GMAIL_PASS
         }
-      });
+      }));
        
 
       var mailOptions = {
