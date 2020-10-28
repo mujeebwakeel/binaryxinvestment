@@ -112,8 +112,13 @@ router.post("/user_account_update/:id", middleware.isAdmin, function(req,res) {
         }
         foundUser[updateType] = amount;
         foundUser.save(function(err, user) {
+            if(err || !user) {
+                req.flash("error", "User update failed, try agagin.");
+                return res.redirect("/moredetail?q=" + foundUser._id)
+            }
+            console.log(user);
             req.flash("success", "You successfully updated a user");
-            res.redirect("/moredetail?q=" + user._id)
+            res.redirect("/moredetail?q=" + foundUser._id)
         });
     })
 })
